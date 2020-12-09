@@ -6,7 +6,7 @@ create table date(
 create table food(
     id integer primary key autoincrement,
     name text not null,
-    protien integer not null,
+    protein integer not null,
     carbohydrates integer not null,
     fat integer not null,
     calories integer not null
