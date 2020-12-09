@@ -1,6 +1,6 @@
 create table date(
     id integer primary key autoincrement,
-    entery_date date not null
+    entry_date date not null
 );
 
 create table food(

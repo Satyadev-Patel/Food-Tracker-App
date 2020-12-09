@@ -1,5 +1,6 @@
 from flask import Flask, render_template, g, request
 import sqlite3
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -18,9 +19,25 @@ def close_db(error):
     if hasattr(g,'sqlite_db'):
         g.sqlite_db.close()
 
-@app.route('/')
+@app.route('/',methods = ['GET','POST'])
 def index():
-    return render_template('home.html')
+    db = get_db()
+    if request.method == 'POST':
+        date = request.form['date']
+        dt = datetime.strptime(date,'%Y-%m-%d')
+        database_date = datetime.strftime(dt,'%Y%m%d')
+        db.execute('insert into date (entry_date) values (?)',[database_date])
+        db.commit()
+    
+    cur = db.execute('select entry_date from date order by entry_date desc')
+    results = cur.fetchall()
+    r1 = []
+    for i in results:
+        sd = {}
+        d = datetime.strptime(str(i['entry_date']),'%Y%m%d')
+        sd['entry_date'] = datetime.strftime(d,'%B %d, %Y')
+        r1.append(sd)
+    return render_template('home.html',results = r1)
 
 @app.route('/view')
 def view():

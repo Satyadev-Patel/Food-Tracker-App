@@ -37,17 +37,17 @@
           <form method="POST" action="/">
             <div class="form-group">
               <label for="new-day">New Day</label>
-              <input type="date" class="form-control" id="new-day">
+              <input type="date" class="form-control" name = "date" id="new-day">
             </div>
 
             <button type="submit" class="btn btn-primary">Add</button>
           </form>
 
           <div class="page-header"></div>
-
+          {% for i in results %}
           <div class="panel panel-primary">
             <div class="panel-heading">
-              <h3 class="panel-title">January 28, 2017</h3>
+              <h3 class="panel-title">{{i.entry_date}}</h3>
             </div>
             <div class="panel-body">
               <ul class="nav nav-pills" role="tablist">
@@ -58,7 +58,9 @@
                 <li><a href="#" type="button" class="btn btn-link">View Detail</a></li>
               </ul>
             </div>
+            
           </div>
+          {% endfor %}
         </div>
       </div>
 
