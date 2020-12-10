@@ -41,7 +41,7 @@
 
             <div class="panel-body">
 
-              <form method="POST" action="{{ url_for('view',date = '20201214') }}">
+              <form method="POST" action="{{ url_for('view',date = page_date) }}">
                 <div class="form-group">
                   <select class="form-control" name = "food-select">
                     {% for i in food %}

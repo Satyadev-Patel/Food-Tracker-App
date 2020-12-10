@@ -38,6 +38,7 @@ def index():
 
     for i in results:
         sd = {}
+        sd['date'] = i['entry_date']
         d = datetime.strptime(str(i['entry_date']),'%Y%m%d')
         sd['entry_date'] = datetime.strftime(d,'%B %d, %Y')
         r1.append(sd)
@@ -78,7 +79,8 @@ def view(date):
         frr += int(i['fat'])
         cll += int(i['calories'])
 
-    return render_template('day.html',date = ans,food = food_results,log = log_results,prr = prr,crr = crr,frr = frr,cll = cll)
+    return render_template('day.html',date = ans,food = food_results,log = log_results,\
+        prr = prr,crr = crr,frr = frr,cll = cll,page_date = date)
 
 
 @app.route('/add_food',methods = ['GET','POST'])
@@ -98,7 +100,7 @@ def add_food():
 
     cur = db.execute('select name,protein,carbohydrates,fat,calories from food')
     results = cur.fetchall()
-    
+
     return render_template('add_food.html', results = results)
 
 if __name__ == '__main__':
