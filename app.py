@@ -39,9 +39,31 @@ def index():
         r1.append(sd)
     return render_template('home.html',results = r1)
 
-@app.route('/view')
-def view():
-    return render_template('day.html')
+@app.route('/view/<date>',methods = ['GET','POST'])
+def view(date):
+    db = get_db()
+    cur = db.execute('select id,entry_date from date where entry_date = ?',[date])
+    date_result = cur.fetchone()
+
+    if request.method == 'POST':
+       ''' food_id = request.form['food-select']
+       # cur = db.execute('select id from date where date = ?',[date])
+       # ans = cur.fetchone()
+        db.execute('insert into food_date (food_id,log_date_id) values (?,?)',[int(food_id),int(date_result['entry_date'])])
+        db.commit()
+       # cur = db.execute('select * from food_date where log_date_id = ?',[ans])
+       # food_selected = cur.fetchall()'''
+       # return render_template('day.html',date = ans,food = food_results)
+       db.execute('insert into food_date (food_id,log_date_id) values (?,?)',[request.form['food-select'],date_result['id']])
+       db.commit()
+    
+    
+    d = datetime.strptime(str(date_result['entry_date']),'%Y%m%d')
+    ans = datetime.strftime(d,'%B %d, %Y')
+    #return '{}'.format(ans)
+    food_items = db.execute('select id,name from food')
+    food_results = food_items.fetchall()
+    return render_template('day.html',date = ans,food = food_results)
 
 @app.route('/add_food',methods = ['GET','POST'])
 def add_food():
